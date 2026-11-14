@@ -349,7 +349,7 @@ runQualityTests();
  {id:'analysis',items:[['simulator',null],['followup','Långtidstrender och årskontroll'],['kidney','Njurfunktion och albuminuri'],['cardiorisk','Kardiovaskulär risk och riskkommunikation']]},
  {id:'consult',items:[['visit',null],['patient','Patientvänlig sammanfattning'],['qualityassurance','Avancerat: kvalitetskontroll']]}
  ];
- const footer=main.querySelector('p.foot:last-of-type');
+ 
  function setView(id){
   document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
   document.querySelectorAll('.workspace').forEach(w=>w.classList.toggle('active',w.id===id+'Workspace'));
@@ -371,7 +371,7 @@ runQualityTests();
    const d=document.createElement('details');d.className='collapsible';d.id='expand_'+id;
    const summary=document.createElement('summary');summary.textContent=title;d.appendChild(summary);d.appendChild(p);wrap.appendChild(d);
   });
-  main.insertBefore(wrap,footer);
+  main.appendChild(wrap);
  });
  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
 })();
