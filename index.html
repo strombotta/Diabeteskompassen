@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#123e49"><title>Diabeteskompassen 0.7</title>
+<meta name="theme-color" content="#123e49"><title>Diabeteskompassen 0.8</title>
 <style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#19343e;background:#f2f6f6}*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(115deg,#123e49,#176b72);color:white;padding:24px max(18px,calc((100vw - 1100px)/2))}header h1{font-size:clamp(24px,4vw,34px);margin:0}header p{margin:5px 0 0;color:#d2eeee}main{max-width:1100px;margin:auto;padding:16px}.banner{background:#fff4dc;border:1px solid #ead7a7;border-radius:12px;padding:12px 15px;font-size:13px;margin-bottom:15px}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.tabs button{white-space:nowrap}.tabs button.active{background:#176b72;color:white}.tabs button:not(.active){background:white;color:#22545c}.panel{display:none}.panel.active{display:block}.card{background:white;border:1px solid #e0e9e9;border-radius:16px;padding:18px;margin:12px 0;box-shadow:0 3px 14px #153e4b0b}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.metric{padding:16px;border-radius:13px;background:#f4f8f8;border-left:4px solid #b7cacc}.metric.bad{border-left-color:#d68d39;background:#fff8ec}.metric.good{border-left-color:#399579}.metric .big{font-size:25px;font-weight:750;margin:5px 0}.muted{color:#60757a;font-size:13px}.pill{font-size:12px;border-radius:30px;padding:4px 9px;background:#e6f2ef;color:#226b5c;display:inline-block}.pill.bad{background:#fff0d8;color:#9b5b18}h2{margin:0 0 13px;font-size:20px}h3{margin:10px 0}button{border:0;border-radius:10px;padding:11px 15px;background:#176b72;color:white;font-weight:650;cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #79bec7}label{display:block;font-size:13px;font-weight:650;margin:7px 0 4px}input,select{width:100%;font:inherit;padding:10px;border:1px solid #b8cbcf;border-radius:9px;background:white}input:invalid{border-color:#bd4c4c}.field{min-width:0}.line{border-bottom:1px solid #e5eded;padding:11px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.chart{width:100%;height:205px;display:block}.matrix{display:grid;grid-template-columns:75px repeat(3,minmax(65px,1fr));gap:4px}.matrix div{padding:12px 4px;text-align:center;border-radius:5px;font-size:12px}.low{background:#c9e9bc}.moderate{background:#f6e79a}.high{background:#f8b97c}.veryhigh{background:#ee8d83}.selected{outline:3px solid #173e4a;outline-offset:-3px;font-weight:800}.foot{font-size:12px;color:#61747a;margin-top:14px}.patient-hero{padding:20px;background:#e9f5f2;border-radius:15px}.patient-hero p{font-size:17px}.hidden{display:none!important}@media print{header,.tabs,.actions,.banner{display:none!important}.panel{display:none!important}#patient{display:block!important}.card{box-shadow:none;break-inside:avoid}body{background:white}}
 </style></head><body>
-<header><h1>◈ Diabeteskompassen <small style="font-size:13px;opacity:.8">0.7</small></h1><p>Översikt, trender och patientdialog · Typ 2-diabetes</p></header>
+<header><h1>◈ Diabeteskompassen <small style="font-size:13px;opacity:.8">0.8</small></h1><p>Översikt, trender och patientdialog · Typ 2-diabetes</p></header>
 <main><div class="banner"><strong>Demonstrationsverktyg – inte kliniskt validerat.</strong> Använd endast fiktiva uppgifter. Målen är exempel och måste individualiseras. Ingen mortalitets- eller kardiovaskulär risk beräknas. Ingen information skickas till en server av denna sida.</div>
-<nav class="tabs" aria-label="Vyer"><button class="active" data-tab="overview">Översikt</button><button data-tab="values">Mätvärden & mål</button><button data-tab="kidney">Njurar</button><button data-tab="assessment">Riskprofil</button><button data-tab="simulator">Simulator</button><button data-tab="followup">Uppföljning</button><button data-tab="cardiorisk">Hjärtrisk</button><button data-tab="visit">Besöksassistent</button><button data-tab="patient">Patientläge</button></nav>
+<nav class="tabs" aria-label="Vyer"><button class="active" data-tab="overview">Översikt</button><button data-tab="values">Mätvärden & mål</button><button data-tab="kidney">Njurar</button><button data-tab="assessment">Riskprofil</button><button data-tab="simulator">Simulator</button><button data-tab="followup">Uppföljning</button><button data-tab="cardiorisk">Hjärtrisk</button><button data-tab="visit">Besöksassistent</button><button data-tab="qualityassurance">Kvalitetskontroll</button><button data-tab="patient">Patientläge</button></nav>
 <section class="panel active" id="overview"><div class="card"><h2>Kontrollöversikt</h2><div id="metrics" class="grid"></div></div><div class="grid"><div class="card"><h2>Att uppmärksamma</h2><div id="attention"></div></div><div class="card"><h2>Trend över två kontroller</h2><label for="trendSelect">Välj parameter</label><select id="trendSelect"></select><svg id="trendChart" class="chart" viewBox="0 0 420 205" role="img" aria-label="Jämförelse av föregående och aktuellt värde"></svg><div id="trendText" class="muted"></div></div></div></section>
 <section class="panel" id="values"><div class="card"><h2>Mätvärden och individuella mål</h2><p class="muted">Ändra aktuellt värde, föregående värde och målnivå. Målvärdena är redigerbara demonstrationsvärden.</p><div class="grid" id="editor"></div><div class="actions" style="margin-top:15px"><button id="reset">Återställ exempelpatient</button></div></div></section>
 <section class="panel" id="kidney"><div class="card"><h2>Njurfunktion och albuminuri</h2><p id="kidneySummary"></p><p class="muted">KDIGO:s G/A-kategorier för vuxna. Prognosrutorna är kvalitativa kategorier, inte individuella riskprocent. Bedöm kroniskhet, upprepade prover och kliniskt sammanhang.</p><div class="matrix" id="matrix"></div><p class="foot">G1 ≥90, G2 60–89, G3a 45–59, G3b 30–44, G4 15–29, G5 &lt;15 ml/min/1,73 m². A1 &lt;3, A2 3–30, A3 &gt;30 mg/mmol. Enstaka värden fastställer inte CKD.</p></div></section>
@@ -52,8 +52,10 @@
 <div class="card"><h2>Besöksassistent</h2><p class="muted">Samlad genomgång för ett fiktivt diabetesåterbesök. Visar dokumentationsluckor och uppföljningspunkter, inte medicinska ordinationer.</p><div id="visitStats" class="grid"></div></div>
 <div class="grid"><div class="card"><h2>Behöver kompletteras</h2><div id="visitMissing"></div></div><div class="card"><h2>Att diskutera</h2><div id="visitDiscuss"></div></div></div>
 <div class="card"><h2>Besöksplan – egen formulering</h2><p class="muted">Skriv en kort plan med fiktiv text. Ingen automatisk journalöverföring och ingen lagring efter omladdning.</p><label for="visitPlan">Plan och uppföljning</label><textarea id="visitPlan" style="width:100%;min-height:100px;border:1px solid #b8cbcf;border-radius:10px;padding:12px;font:14px system-ui" placeholder="Exempel: Uppföljning av blodtryck, genomgång av läkemedel och ny kontroll..."></textarea><div class="actions" style="margin-top:12px"><button id="visitCopy" type="button">Kopiera besöksunderlag</button><button id="visitPrint" type="button">Skriv ut</button></div><textarea id="visitPreview" readonly style="width:100%;min-height:250px;margin-top:12px;border:1px solid #b8cbcf;border-radius:10px;padding:12px;font:13px system-ui" aria-label="Förhandsgranskning av besöksunderlag"></textarea></div>
-<div class="card"><h2>Innan klinisk användning</h2><p>Programmet är ännu inte medicintekniskt verifierat eller validerat. Använd inga identifierbara patientuppgifter. Kontrollera alltid mot patientjournal, nationella riktlinjer och egen medicinsk bedömning.</p></div></section><section class="panel" id="patient"><div class="card"><div class="patient-hero"><h2>Din diabetesöversikt</h2><p>Vi följer flera värden för att skydda hjärta, blodkärl och njurar. Målen anpassas till dig.</p></div><div id="patientCards" class="grid" style="margin-top:14px"></div><h3>Att prata om vid besöket</h3><div id="patientNotes"></div><p class="foot">Detta är en pedagogisk sammanställning av inmatade värden – inte en prognos över din framtida sjukdomsrisk.</p><div class="actions"><button onclick="window.print()">Skriv ut patientöversikt</button></div></div></section>
-<p class="foot">Version 0.7 · Lokalt körbar HTML · Fiktiva exempelvärden · Ingen lagring eller journalintegration.</p></main>
+<div class="card"><h2>Innan klinisk användning</h2><p>Programmet är ännu inte medicintekniskt verifierat eller validerat. Använd inga identifierbara patientuppgifter. Kontrollera alltid mot patientjournal, nationella riktlinjer och egen medicinsk bedömning.</p></div></section><section class="panel" id="qualityassurance">
+<div class="card"><h2>Automatiska kontroller av beräkningslogik</h2><p class="muted">Enkla automatiska regressionstester för gränsvärden, riskmatematik och inmatningslogik. Dessa tester verifierar programkod, inte medicinsk säkerhet eller klinisk validitet.</p><div id="qaSummary" class="metric"></div><div id="qaTests"></div><div class="actions" style="margin-top:12px"><button id="qaRun" type="button">Kör tester igen</button></div></div>
+<div class="card"><h2>Medicinsk validering – återstår</h2><div class="line"><strong>SCORE2-Diabetes</strong><div class="muted">Ingen ekvation, kalibrering eller referensfallsvalidering finns i programmet. Individuell kardiovaskulär risk ska inte anges.</div></div><div class="line"><strong>Behandlingseffekt</strong><div class="muted">Inga evidensbaserade effektestimat eller tidsbundna NNT har implementerats. Riskreglagen är enbart hypotetiska.</div></div><div class="line"><strong>Njurrisk</strong><div class="muted">KDIGO-kategorierna är schematiska och förutsätter klinisk kontext och kroniskhet. Kategorierna ersätter inte individuell bedömning.</div></div><div class="line"><strong>Dataskydd</strong><div class="muted">Webbplatsen är publik. Använd inte identifierbara eller verkliga patientuppgifter. Ingen autentisering, säker journalintegration eller DPIA är genomförd.</div></div><div class="line"><strong>Inför klinisk drift</strong><div class="muted">Behövs bland annat medicinsk sakkunniggranskning, testprotokoll, riskhantering, informationssäkerhetsbedömning och prövning av tillämpliga medicintekniska regelverk.</div></div></div></section><section class="panel" id="patient"><div class="card"><div class="patient-hero"><h2>Din diabetesöversikt</h2><p>Vi följer flera värden för att skydda hjärta, blodkärl och njurar. Målen anpassas till dig.</p></div><div id="patientCards" class="grid" style="margin-top:14px"></div><h3>Att prata om vid besöket</h3><div id="patientNotes"></div><p class="foot">Detta är en pedagogisk sammanställning av inmatade värden – inte en prognos över din framtida sjukdomsrisk.</p><div class="actions"><button onclick="window.print()">Skriv ut patientöversikt</button></div></div></section>
+<p class="foot">Version 0.8 · Lokalt körbar HTML · Fiktiva exempelvärden · Ingen lagring eller journalintegration.</p></main>
 <script>
 'use strict';
 const definitions=[
@@ -67,6 +69,11 @@ const definitions=[
 let state=definitions.map(x=>({...x}));const el=id=>document.getElementById(id);
 const fmt=n=>Number(n).toLocaleString('sv-SE',{maximumFractionDigits:2});
 function ok(x){return x.kind==='min'?x.now>=x.target:x.now<x.target}
+function kdigoG(v){return v>=90?0:v>=60?1:v>=45?2:v>=30?3:v>=15?4:5}
+function kdigoA(v){return v<3?0:v<=30?1:2}
+function absoluteRiskReduction(a,b){return a-b}
+function relativeRiskReduction(a,b){return a>0?(a-b)/a*100:null}
+function numberNeededToTreat(a,b){return a>b?Math.ceil(100/(a-b)):null}
 function valid(x){return [x.now,x.prev,x.target].every(Number.isFinite)&&x.now>=0&&x.prev>=0&&x.target>=0}
 function editor(){el('editor').innerHTML=state.map((x,i)=>'<div class="field"><strong>'+x.name+'</strong><div class="muted">'+x.unit+'</div>'+['now','prev','target'].map((k,j)=>'<label for="'+x.id+k+'">'+['Aktuellt','Föregående','Demomål'][j]+'</label><input id="'+x.id+k+'" type="number" min="0" step="any" value="'+x[k]+'" data-i="'+i+'" data-k="'+k+'">').join('')+'</div>').join('')}
 function update(){const items=state.filter(valid),bad=items.filter(x=>!ok(x));el('metrics').innerHTML=items.map(x=>'<div class="metric '+(ok(x)?'good':'bad')+'"><div class="muted">'+x.name+'</div><div class="big">'+fmt(x.now)+'</div><div class="muted">'+x.unit+'</div><span class="pill '+(ok(x)?'':'bad')+'">'+(ok(x)?'Inom angivet mål':'Utanför angivet mål')+'</span><div class="muted" style="margin-top:7px">Mål '+(x.kind==='min'?'≥':'<')+' '+fmt(x.target)+'</div></div>').join('');
@@ -78,7 +85,7 @@ const chosen=el('trendSelect').value||'hba';const x=state.find(v=>v.id===chosen)
 el('trendChart').innerHTML='<line x1="45" y1="170" x2="390" y2="170" stroke="#aabec0"/><line x1="45" y1="20" x2="45" y2="170" stroke="#aabec0"/><line x1="70" y1="'+y(x.target)+'" x2="370" y2="'+y(x.target)+'" stroke="#d18c3b" stroke-dasharray="5 5"/><polyline points="100,'+y(x.prev)+' 320,'+y(x.now)+'" stroke="#176b72" stroke-width="4" fill="none"/>'+[[100,x.prev,'Föregående'],[320,x.now,'Aktuellt']].map(a=>'<circle cx="'+a[0]+'" cy="'+y(a[1])+'" r="6" fill="#176b72"/><text x="'+a[0]+'" y="'+(y(a[1])-14)+'" text-anchor="middle" font-size="15" fill="#19343e">'+fmt(a[1])+'</text><text x="'+a[0]+'" y="194" text-anchor="middle" font-size="13" fill="#60757a">'+a[2]+'</text>').join('')+'<text x="370" y="'+Math.max(13,y(x.target)-5)+'" text-anchor="end" font-size="12" fill="#a66c28">Demomål</text>';
 el('trendText').textContent=x.name+': '+fmt(x.prev)+' → '+fmt(x.now)+' '+x.unit+'. Två mätpunkter räcker inte för att fastställa en långsiktig trend.';
 kidney(); riskProfile(); renderSimulator(); renderHistory(); renderQuality(); renderRiskEligibility(); renderVisit(); }
-function kidney(){const g=state.find(x=>x.id==='egfr').now,a=state.find(x=>x.id==='acr').now;const G=g>=90?0:g>=60?1:g>=45?2:g>=30?3:g>=15?4:5;const A=a<3?0:a<=30?1:2;const labels=['G1','G2','G3a','G3b','G4','G5'];const levels=[[0,1,2],[0,1,2],[1,2,3],[2,3,3],[3,3,3],[3,3,3]];const classes=['low','moderate','high','veryhigh'];el('kidneySummary').textContent='eGFR '+fmt(g)+' och U-alb/krea '+fmt(a)+' → '+labels[G]+' / A'+(A+1)+'.';el('matrix').innerHTML='<div></div>'+['A1 <3','A2 3–30','A3 >30'].map(s=>'<div><strong>'+s+'</strong></div>').join('')+labels.map((s,i)=>'<div><strong>'+s+'</strong></div>'+[0,1,2].map(j=>'<div class="'+classes[levels[i][j]]+(i===G&&j===A?' selected':'')+'">'+(i===G&&j===A?'● Din ruta':'&nbsp;')+'</div>').join('')).join('')}
+function kidney(){const g=state.find(x=>x.id==='egfr').now,a=state.find(x=>x.id==='acr').now;const G=kdigoG(g);const A=kdigoA(a);const labels=['G1','G2','G3a','G3b','G4','G5'];const levels=[[0,1,2],[0,1,2],[1,2,3],[2,3,3],[3,3,3],[3,3,3]];const classes=['low','moderate','high','veryhigh'];el('kidneySummary').textContent='eGFR '+fmt(g)+' och U-alb/krea '+fmt(a)+' → '+labels[G]+' / A'+(A+1)+'.';el('matrix').innerHTML='<div></div>'+['A1 <3','A2 3–30','A3 >30'].map(s=>'<div><strong>'+s+'</strong></div>').join('')+labels.map((s,i)=>'<div><strong>'+s+'</strong></div>'+[0,1,2].map(j=>'<div class="'+classes[levels[i][j]]+(i===G&&j===A?' selected':'')+'">'+(i===G&&j===A?'● Din ruta':'&nbsp;')+'</div>').join('')).join('')}
 el('editor').addEventListener('input',e=>{const i=e.target.dataset.i,k=e.target.dataset.k;if(i===undefined)return;const v=e.target.value.trim();if(v===''||!Number.isFinite(Number(v))||Number(v)<0){e.target.setCustomValidity('Ange ett giltigt icke-negativt värde');return}e.target.setCustomValidity('');state[Number(i)][k]=Number(v);update()});
 el('reset').onclick=()=>{state=definitions.map(x=>({...x}));editor();update()};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab))});
@@ -221,6 +228,7 @@ function renderRiskEligibility(){
  if(egfr<45)flags.push('eGFR under 45: allvarlig njurpåverkan kräver särskild riskbedömning.');
  if(acr>30)flags.push('Kraftig albuminuri: bedöm målorganskada och modellens exklusionskriterier.');
  if(el('riskDiabetesOnset').value!==''&&onset>age)flags.push('Diagnosålder kan inte vara högre än aktuell ålder.');
+ if(el('riskDiabetesOnset').value!==''&&Math.abs((age-onset)-duration)>2)flags.push('Diabetesduration och diagnosålder skiljer sig åt. Kontrollera uppgifterna.');
  if(duration<0||duration>age)flags.push('Kontrollera diabetesduration.');
  if(tc>0&&hdl>=tc)flags.push('HDL kan inte vara lika högt eller högre än totalkolesterol i denna inmatning.');
  if(el('riskRegion').value==='unverified')missing.push('verifierad riskregionskalibrering');
@@ -230,14 +238,14 @@ function renderRiskEligibility(){
 function renderRiskMath(){
  const a=Number(el('exampleBaseline').value),b=Number(el('exampleTreated').value);
  if(!Number.isFinite(a)||!Number.isFinite(b)||a<0||a>100||b<0||b>100){el('riskMath').textContent='Ange två riskvärden mellan 0 och 100 procent.';el('riskIcons').innerHTML='';return}
- const arr=a-b,rrr=a>0?arr/a*100:null,nnt=arr>0?Math.ceil(100/arr):null;
+ const arr=absoluteRiskReduction(a,b),rrr=relativeRiskReduction(a,b),nnt=numberNeededToTreat(a,b);
  el('riskMath').innerHTML=[
- ['Absolut riskskillnad',fmt(arr)+' procentenheter'],
+ ['Absolut riskskillnad',fmt(arr)+' procentenheter'+(arr<0?' (riskökning)':'')],
  ['Relativ riskminskning',rrr===null?'Ej definierad':fmt(rrr)+' %'],
  ['NNT',nnt===null?'Ej beräkningsbart vid utebliven riskminskning':String(nnt)]
  ].map(x=>'<div class="metric"><div class="muted">'+x[0]+'</div><div class="big">'+x[1]+'</div></div>').join('');
  const base=Math.round(a),treated=Math.round(b);
- el('riskIcons').innerHTML=Array.from({length:100},(_,i)=>'<span title="Person '+(i+1)+'" style="width:12px;height:16px;border-radius:3px;background:'+(i<treated?'#c46b5c':i<base&&arr>=0?'#dfb65b':'#c9d7d8')+'"></span>').join('');
+ el('riskIcons').innerHTML=Array.from({length:100},(_,i)=>'<span title="Person '+(i+1)+'" style="width:12px;height:16px;border-radius:3px;background:'+(i<Math.min(base,treated)?'#c46b5c':i<Math.max(base,treated)?'#dfb65b':'#c9d7d8')+'"></span>').join('');
 }
 ['riskSex','riskTotalChol','riskHdl','riskDiabetesOnset','riskRegion'].forEach(id=>el(id).addEventListener('input',renderRiskEligibility));
 ['age','duration','cvd'].forEach(id=>el(id).addEventListener('input',renderRiskEligibility));
@@ -303,6 +311,34 @@ el('visitPrint').addEventListener('click',()=>{
  if(!w){alert('Tillåt popup-fönster för att skriva ut, eller kopiera underlaget.');return}
  const pre=w.document.createElement('pre');pre.style.cssText='white-space:pre-wrap;font:14px system-ui;padding:24px';pre.textContent=data;w.document.title='Fiktivt besöksunderlag';w.document.body.appendChild(pre);w.print();
 });
+
+
+function runQualityTests(){
+ const tests=[
+ ['eGFR 90 → G1',kdigoG(90)===0],
+ ['eGFR 60 → G2',kdigoG(60)===1],
+ ['eGFR 45 → G3a',kdigoG(45)===2],
+ ['eGFR 30 → G3b',kdigoG(30)===3],
+ ['eGFR 15 → G4',kdigoG(15)===4],
+ ['eGFR 14,9 → G5',kdigoG(14.9)===5],
+ ['U-alb/krea 2,9 → A1',kdigoA(2.9)===0],
+ ['U-alb/krea 3 → A2',kdigoA(3)===1],
+ ['U-alb/krea 30 → A2',kdigoA(30)===1],
+ ['U-alb/krea 30,1 → A3',kdigoA(30.1)===2],
+ ['ARR 20 % → 15 % = 5 pp',absoluteRiskReduction(20,15)===5],
+ ['RRR 20 % → 15 % = 25 %',relativeRiskReduction(20,15)===25],
+ ['NNT 20 % → 15 % = 20',numberNeededToTreat(20,15)===20],
+ ['Riskökning 15 % → 20 % ger inget NNT',numberNeededToTreat(15,20)===null],
+ ['Baslinjerisk 0 % ger ej definierad RRR',relativeRiskReduction(0,0)===null],
+ ['HbA1c precis på övre demomål räknas ej som under målet',!ok({kind:'max',now:52,target:52})],
+ ['eGFR precis på nedre demogräns räknas som inom gränsen',ok({kind:'min',now:60,target:60})]
+ ];
+ const passed=tests.filter(t=>t[1]).length;
+ el('qaSummary').innerHTML='<strong>'+passed+' av '+tests.length+' kodtester godkända</strong><p class="muted">Detta är interna logiktester – inte klinisk validering.</p>';
+ el('qaTests').innerHTML=tests.map(t=>'<div class="line"><span style="color:'+(t[1]?'#25785e':'#ad3b35')+'">'+(t[1]?'✓':'✕')+'</span> '+t[0]+'</div>').join('');
+}
+el('qaRun').addEventListener('click',runQualityTests);
+runQualityTests();
 
 el('trendSelect').innerHTML=state.map(x=>'<option value="'+x.id+'">'+x.name+'</option>').join('');el('trendSelect').onchange=update;editor();update();renderVisit();
 </script></body></html>
