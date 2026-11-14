@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#123e49"><title>Diabeteskompassen 1.2</title>
+<meta name="theme-color" content="#123e49"><title>Diabeteskompassen 1.3</title>
 <style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#19343e;background:#f2f6f6}*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(115deg,#123e49,#176b72);color:white;padding:24px max(18px,calc((100vw - 1100px)/2))}header h1{font-size:clamp(24px,4vw,34px);margin:0}header p{margin:5px 0 0;color:#d2eeee}main{max-width:1100px;margin:auto;padding:16px}.banner{background:#fff4dc;border:1px solid #ead7a7;border-radius:12px;padding:12px 15px;font-size:13px;margin-bottom:15px}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.tabs button{white-space:nowrap}.tabs button.active{background:#176b72;color:white}.tabs button:not(.active){background:white;color:#22545c}.panel{display:none}.panel.active{display:block}.card{background:white;border:1px solid #e0e9e9;border-radius:16px;padding:18px;margin:12px 0;box-shadow:0 3px 14px #153e4b0b}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.metric{padding:16px;border-radius:13px;background:#f4f8f8;border-left:4px solid #b7cacc}.metric.bad{border-left-color:#d68d39;background:#fff8ec}.metric.good{border-left-color:#399579}.metric .big{font-size:25px;font-weight:750;margin:5px 0}.muted{color:#60757a;font-size:13px}.pill{font-size:12px;border-radius:30px;padding:4px 9px;background:#e6f2ef;color:#226b5c;display:inline-block}.pill.bad{background:#fff0d8;color:#9b5b18}h2{margin:0 0 13px;font-size:20px}h3{margin:10px 0}button{border:0;border-radius:10px;padding:11px 15px;background:#176b72;color:white;font-weight:650;cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #79bec7}label{display:block;font-size:13px;font-weight:650;margin:7px 0 4px}input,select{width:100%;font:inherit;padding:10px;border:1px solid #b8cbcf;border-radius:9px;background:white}input:invalid{border-color:#bd4c4c}.field{min-width:0}.line{border-bottom:1px solid #e5eded;padding:11px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.chart{width:100%;height:205px;display:block}.matrix{display:grid;grid-template-columns:75px repeat(3,minmax(65px,1fr));gap:4px}.matrix div{padding:12px 4px;text-align:center;border-radius:5px;font-size:12px}.low{background:#c9e9bc}.moderate{background:#f6e79a}.high{background:#f8b97c}.veryhigh{background:#ee8d83}.selected{outline:3px solid #173e4a;outline-offset:-3px;font-weight:800}.foot{font-size:12px;color:#61747a;margin-top:14px}.patient-hero{padding:20px;background:#e9f5f2;border-radius:15px}.patient-hero p{font-size:17px}.hidden{display:none!important}@media print{header,.tabs,.actions,.banner{display:none!important}.panel{display:none!important}#patient{display:block!important}.card{box-shadow:none;break-inside:avoid}body{background:white}}
 </style><style>.workspace{display:none}.workspace.active{display:block}.workspace .panel{display:block}details.collapsible{border:1px solid #d9e6e7;border-radius:15px;background:white;margin:12px 0;overflow:hidden}details.collapsible>summary{cursor:pointer;padding:16px 18px;font-weight:700;list-style:none;display:flex;justify-content:space-between}details.collapsible>summary:after{content:'＋';color:#176b72;font-size:21px}details.collapsible[open]>summary:after{content:'−'}details.collapsible>summary::-webkit-details-marker{display:none}details.collapsible>.panel{padding:0 12px 8px}details.collapsible .card{box-shadow:none;border:0;border-top:1px solid #e7eeee;border-radius:0;padding:16px 6px}.quicklinks{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}.quicklinks button{background:#e6f1f1;color:#16535c;font-size:13px;padding:8px 12px}@media print{.workspace{display:none!important}#consultWorkspace{display:block!important}.workspace .panel{display:none!important}#patient{display:block!important}details.collapsible{display:none!important}}</style>
@@ -60,11 +60,27 @@ a{color:#81e7dd}
 @media(max-width:760px){main{padding:12px 12px 50px}.future-hero{grid-template-columns:1fr}.future-hero-main{padding:22px}.future-side{grid-template-columns:1fr 1fr}.future-mini{padding:15px}.tabs button{padding:12px 14px}.card{padding:17px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
 @media print{:root{color-scheme:light}body{background:white;color:#111}.card,.metric{background:white;color:#111;border-color:#ccc}.future-hero{display:none}input,select,textarea{background:white!important;color:#111!important}}
+</style><style id="clinical-cockpit">
+.organ-cockpit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.organ-tile{background:linear-gradient(150deg,#132e3b,#0b202e);border:1px solid #315161;border-radius:17px;padding:19px;min-height:170px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;color:#ecfafb;transition:transform .15s,border-color .15s}
+.organ-tile:hover{transform:translateY(-2px);border-color:#67d7ca}
+.organ-tile:focus-visible{outline:3px solid #7be5d6}
+.organ-icon{display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border-radius:12px;background:#204755;color:#88f0e0;font-size:21px}
+.organ-name{font-size:15px;font-weight:800;letter-spacing:-.02em}
+.organ-number{font-size:24px;font-weight:800;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.organ-desc{font-size:12px;line-height:1.45;color:#b5cdd3}
+.organ-tag{font-size:11px;font-weight:700;color:#9cebdc}
+.organ-tag.warn{color:#ffd29a}
+.cockpit-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cockpit-bottom p{margin:0}
+@media(max-width:750px){.organ-cockpit{grid-template-columns:1fr 1fr}.organ-tile{min-height:156px;padding:14px}}
+@media(max-width:420px){.organ-cockpit{grid-template-columns:1fr}}
+@media print{.organ-cockpit{display:none}}
 </style></head><body>
-<header><h1>✧ Diabeteskompassen <small style="font-size:13px;opacity:.8">1.2</small></h1><p>Nästa generations beslutsstöd · Typ 2-diabetes</p></header>
+<header><h1>✧ Diabeteskompassen <small style="font-size:13px;opacity:.8">1.3</small></h1><p>Nästa generations beslutsstöd · Typ 2-diabetes</p></header>
 <main><div class="banner"><strong>Demonstrationsverktyg – inte kliniskt validerat.</strong> Använd endast fiktiva uppgifter. Målen är exempel och måste individualiseras. En experimentell SCORE2-Diabetes-beräkning finns, men är inte kliniskt validerad. Ingen separat mortalitetsrisk beräknas. Ingen information skickas till en server av denna sida.</div>
 <nav class="tabs" aria-label="Huvudvyer"><button class="active" data-view="home">Patientöversikt</button><button data-view="analysis">Analys & simulering</button><button data-view="consult">Besök & patient</button></nav><p class="muted">Registrera → analysera → sammanfatta. Öppna fördjupningar bara när du behöver dem.</p>
-<section class="panel active" id="overview"><div class="future-hero"><div class="future-hero-main"><div class="future-eyebrow">Clinical intelligence / diabetes</div><h2>En tydligare bild.<br>Smartare uppföljning.</h2><p>Samla patientens mätvärden, upptäck avvikelser och utforska riskprofiler i ett sammanhängande arbetsflöde.</p><div class="future-status">Demoläge · Fiktiva patientuppgifter</div></div><div class="future-side"><div class="future-mini"><div class="caption">Värden att diskutera</div><div class="num" id="futureAttention">–</div><div class="hint">Utifrån individuella demomål</div></div><div class="future-mini"><div class="caption">Registrerade parametrar</div><div class="num" id="futureParameters">–</div><div class="hint">Uppdateras direkt</div></div></div></div><div class="card"><h2>Kontrollöversikt</h2><div id="metrics" class="grid"></div></div><div class="grid"><div class="card"><h2>Att uppmärksamma</h2><div id="attention"></div></div><div class="card"><h2>Trend över två kontroller</h2><label for="trendSelect">Välj parameter</label><select id="trendSelect"></select><svg id="trendChart" class="chart" viewBox="0 0 420 205" role="img" aria-label="Jämförelse av föregående och aktuellt värde"></svg><div id="trendText" class="muted"></div></div></div></section>
+<section class="panel active" id="overview"><div class="future-hero"><div class="future-hero-main"><div class="future-eyebrow">Clinical intelligence / diabetes</div><h2>En tydligare bild.<br>Smartare uppföljning.</h2><p>Samla patientens mätvärden, upptäck avvikelser och utforska riskprofiler i ett sammanhängande arbetsflöde.</p><div class="future-status">Demoläge · Fiktiva patientuppgifter</div></div><div class="future-side"><div class="future-mini"><div class="caption">Värden att diskutera</div><div class="num" id="futureAttention">–</div><div class="hint">Utifrån individuella demomål</div></div><div class="future-mini"><div class="caption">Registrerade parametrar</div><div class="num" id="futureParameters">–</div><div class="hint">Uppdateras direkt</div></div></div></div><div class="card" id="organCockpitCard"><div class="cockpit-bottom"><div><div class="future-eyebrow">Patientens hälsosignaler</div><h2 style="margin-top:7px">Organ & risk – samlad lägesbild</h2></div><span class="pill">Live från inmatade demovärden</span></div><p class="muted">Välj ett område för fördjupning. Status är en förenklad uppföljningssignal – inte en diagnos eller automatiserad behandlingsrekommendation.</p><div id="organCockpit" class="organ-cockpit" aria-live="polite"></div><p class="foot">Hjärt-kärlrisk är en experimentell SCORE2-Diabetes-prognos för sammansatta händelser, inte mortalitet. Njursignal baseras på enstaka eGFR/U-alb-krea och bekräftar inte CKD.</p></div><div class="card"><h2>Kontrollöversikt</h2><div id="metrics" class="grid"></div></div><div class="grid"><div class="card"><h2>Att uppmärksamma</h2><div id="attention"></div></div><div class="card"><h2>Trend över två kontroller</h2><label for="trendSelect">Välj parameter</label><select id="trendSelect"></select><svg id="trendChart" class="chart" viewBox="0 0 420 205" role="img" aria-label="Jämförelse av föregående och aktuellt värde"></svg><div id="trendText" class="muted"></div></div></div></section>
 <section class="panel" id="values"><div class="card"><h2>Mätvärden och individuella mål</h2><p class="muted">Ändra aktuellt värde, föregående värde och målnivå. Målvärdena är redigerbara demonstrationsvärden.</p><div class="grid" id="editor"></div><div class="actions" style="margin-top:15px"><button id="reset">Återställ exempelpatient</button></div></div></section>
 <section class="panel" id="kidney"><div class="card"><h2>Njurfunktion och albuminuri</h2><p id="kidneySummary"></p><p class="muted">KDIGO:s G/A-kategorier för vuxna. Prognosrutorna är kvalitativa kategorier, inte individuella riskprocent. Bedöm kroniskhet, upprepade prover och kliniskt sammanhang.</p><div class="matrix" id="matrix"></div><p class="foot">G1 ≥90, G2 60–89, G3a 45–59, G3b 30–44, G4 15–29, G5 &lt;15 ml/min/1,73 m². A1 &lt;3, A2 3–30, A3 &gt;30 mg/mmol. Enstaka värden fastställer inte CKD.</p></div></section>
 <section class="panel" id="assessment">
@@ -122,7 +138,7 @@ a{color:#81e7dd}
 <div class="card"><h2>Innan klinisk användning</h2><p>Programmet är ännu inte medicintekniskt verifierat eller validerat. Använd inga identifierbara patientuppgifter. Kontrollera alltid mot patientjournal, nationella riktlinjer och egen medicinsk bedömning.</p></div></section><section class="panel" id="qualityassurance">
 <div class="card"><h2>Automatiska kontroller av beräkningslogik</h2><p class="muted">Enkla automatiska regressionstester för gränsvärden, riskmatematik och inmatningslogik. Dessa tester verifierar programkod, inte medicinsk säkerhet eller klinisk validitet.</p><div id="qaSummary" class="metric"></div><div id="qaTests"></div><div class="actions" style="margin-top:12px"><button id="qaRun" type="button">Kör tester igen</button></div></div>
 <div class="card"><h2>Medicinsk validering – återstår</h2><div class="line"><strong>SCORE2-Diabetes</strong><div class="muted">Ingen ekvation, kalibrering eller referensfallsvalidering finns i programmet. Individuell kardiovaskulär risk ska inte anges.</div></div><div class="line"><strong>Behandlingseffekt</strong><div class="muted">Inga evidensbaserade effektestimat eller tidsbundna NNT har implementerats. Riskreglagen är enbart hypotetiska.</div></div><div class="line"><strong>Njurrisk</strong><div class="muted">KDIGO-kategorierna är schematiska och förutsätter klinisk kontext och kroniskhet. Kategorierna ersätter inte individuell bedömning.</div></div><div class="line"><strong>Dataskydd</strong><div class="muted">Webbplatsen är publik. Använd inte identifierbara eller verkliga patientuppgifter. Ingen autentisering, säker journalintegration eller DPIA är genomförd.</div></div><div class="line"><strong>Inför klinisk drift</strong><div class="muted">Behövs bland annat medicinsk sakkunniggranskning, testprotokoll, riskhantering, informationssäkerhetsbedömning och prövning av tillämpliga medicintekniska regelverk.</div></div></div></section><section class="panel" id="patient"><div class="card"><div class="patient-hero"><h2>Din diabetesöversikt</h2><p>Vi följer flera värden för att skydda hjärta, blodkärl och njurar. Målen anpassas till dig.</p></div><div id="patientCards" class="grid" style="margin-top:14px"></div><h3>Att prata om vid besöket</h3><div id="patientNotes"></div><p class="foot">Detta är en pedagogisk sammanställning av inmatade värden – inte en prognos över din framtida sjukdomsrisk.</p><div class="actions"><button onclick="window.print()">Skriv ut patientöversikt</button></div></div></section>
-<p class="foot">Version 1.2 · Lokalt körbar HTML · Fiktiva exempelvärden · Ingen lagring eller journalintegration.</p></main>
+<p class="foot">Version 1.3 · Lokalt körbar HTML · Fiktiva exempelvärden · Ingen lagring eller journalintegration.</p></main>
 <script>
 (function consolidateNavigation(){
  const main=document.querySelector('main'),panels={};
@@ -156,6 +172,7 @@ a{color:#81e7dd}
   });
   main.appendChild(wrap);
  });
+ window.setDiabetesView=setView;
  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
 })();
 </script>
@@ -242,7 +259,7 @@ function renderSimulator(){
  const range=simRange(x),value=sim[x.id];
  return '<div class="metric"><strong>'+x.name+'</strong><div class="muted">'+x.unit+'</div><div class="big" id="simLabel_'+x.id+'">'+simFmt(value)+'</div><input aria-label="Scenario för '+x.name+'" type="range" min="'+range[0]+'" max="'+range[1]+'" step="'+(x.id==='ldl'||x.id==='acr'?0.1:1)+'" value="'+value+'" data-sim="'+x.id+'"><div class="muted">Nu: '+fmt(x.now)+' · demomål '+(x.kind==='min'?'≥':'<')+' '+fmt(x.target)+'</div></div>';
  }).join('');
- renderSimResults();renderScore2DM();
+ renderSimResults();renderScore2DM();renderOrganCockpit();
 }
 function renderSimResults(){
  const results=el('simResults');if(!results)return;
@@ -346,6 +363,29 @@ function renderScore2DM(){
  box.innerHTML='<div class="grid"><div class="metric"><div class="muted">SCORE2-Diabetes · Sverige, lågriskregion · 10 år</div><div class="big">'+pct(risk)+'</div><div class="muted">Dödlig eller icke-dödlig hjärt-kärlhändelse</div></div><div class="metric"><div class="muted">Alternativ riskprofil i simulatorn</div><div class="big">'+(comparison===null?'Ej beräknad':pct(comparison))+'</div><div class="muted">Prognostisk jämförelse, INTE behandlingseffekt eller mortalitetsvinst.</div></div></div>';
 }
 
+
+function renderOrganCockpit(){
+ const root=el('organCockpit');if(!root)return;
+ const get=id=>state.find(x=>x.id===id),hba=get('hba'),bp=get('sys'),ldl=get('ldl'),egfr=get('egfr'),acr=get('acr');
+ const v=currentScore2Inputs();
+ const canRisk=el('riskRegion').value==='sweden'&&el('cvd').value==='no'&&el('smoking').value!=='unknown'&&v.egfr>=45&&acr.now<=30&&v.onset>=0&&Math.abs((v.age-v.onset)-Number(el('duration').value))<=2;
+ const risk=canRisk?score2DM(v):null;
+ const kidneyFlag=egfr.now<60||acr.now>=3;
+ const cells=[
+ {icon:'♡',title:'Hjärta & kärl',value:risk===null?'Ej beräknad':fmt(risk)+' %',tag:risk===null?'Komplettera riskprofil':'10-årsrisk · experimentell',warn:risk===null,desc:'SCORE2-Diabetes · sammansatta hjärt-kärlhändelser',view:'analysis',expand:'cardiorisk'},
+ {icon:'◈',title:'Njurfunktion',value:'G'+(['1','2','3a','3b','4','5'][kdigoG(egfr.now)])+' / A'+(kdigoA(acr.now)+1),tag:kidneyFlag?'Följ upp avvikande fynd':'Ingen avvikelse enligt gränserna',warn:kidneyFlag,desc:'eGFR '+fmt(egfr.now)+' · U-alb/krea '+fmt(acr.now),view:'analysis',expand:'kidney'},
+ {icon:'◉',title:'Glukoskontroll',value:fmt(hba.now)+' mmol/mol',tag:ok(hba)?'Inom demomål':'Utanför demomål',warn:!ok(hba),desc:'HbA1c · individuellt demomål '+fmt(hba.target),view:'home',expand:'values'},
+ {icon:'↗',title:'Blodtryck',value:fmt(bp.now)+' mmHg',tag:ok(bp)?'Inom demomål':'Utanför demomål',warn:!ok(bp),desc:'Systoliskt blodtryck · demomål '+fmt(bp.target),view:'home',expand:'values'},
+ {icon:'≈',title:'Blodfetter',value:fmt(ldl.now)+' mmol/L',tag:ok(ldl)?'Inom demomål':'Utanför demomål',warn:!ok(ldl),desc:'LDL · individuellt demomål '+fmt(ldl.target),view:'home',expand:'values'},
+ {icon:'✦',title:'Nästa steg',value:'Besöksstöd',tag:'Öppna sammanfattning',warn:false,desc:'Samla värden och frågor inför patientdialog',view:'consult',expand:null}
+ ];
+ root.innerHTML=cells.map((c,i)=>'<button type="button" class="organ-tile" data-organ="'+i+'" aria-label="'+c.title+', '+c.value+', öppna fördjupning"><span class="organ-icon">'+c.icon+'</span><span class="organ-name">'+c.title+'</span><span class="organ-number">'+c.value+'</span><span class="organ-tag '+(c.warn?'warn':'')+'">'+c.tag+'</span><span class="organ-desc">'+c.desc+'</span></button>').join('');
+ root.querySelectorAll('[data-organ]').forEach(btn=>btn.addEventListener('click',()=>{
+  const c=cells[Number(btn.dataset.organ)];window.setDiabetesView(c.view);
+  if(c.expand){const d=el('expand_'+c.expand);if(d){d.open=true;requestAnimationFrame(()=>d.scrollIntoView({behavior:'smooth',block:'start'}))}}
+ }));
+}
+
 function renderRiskEligibility(){
  const age=Number(el('age').value),duration=Number(el('duration').value);
  const cvd=el('cvd').value,egfr=state.find(x=>x.id==='egfr').now,acr=state.find(x=>x.id==='acr').now;
@@ -365,7 +405,7 @@ function renderRiskEligibility(){
  if(tc>0&&hdl>=tc)flags.push('HDL kan inte vara lika högt eller högre än totalkolesterol i denna inmatning.');
  if(el('riskRegion').value==='unverified')missing.push('välj Sverige som riskregion');
  const lines=[...flags.map(x=>'⚠ '+x),...missing.map(x=>'• Saknas: '+x)];
- el('riskEligibility').innerHTML='<div class="metric '+(flags.length?'bad':'good')+'"><strong>'+(flags.length?'Behöver särskild bedömning':missing.length?'Underlag behöver kompletteras':'Uppgifter ifyllda – modell ej aktiverad')+'</strong>'+lines.map(x=>'<div class="line">'+x+'</div>').join('')+'<p class="foot">Riskprocent visas inte. Detta är en preliminär kontroll av uppgifter och inte en fullständig validering av modellens tillämplighet.</p></div>';renderScore2DM();renderVisit();
+ el('riskEligibility').innerHTML='<div class="metric '+(flags.length?'bad':'good')+'"><strong>'+(flags.length?'Behöver särskild bedömning':missing.length?'Underlag behöver kompletteras':'Uppgifter ifyllda – modell ej aktiverad')+'</strong>'+lines.map(x=>'<div class="line">'+x+'</div>').join('')+'<p class="foot">Riskprocent visas inte. Detta är en preliminär kontroll av uppgifter och inte en fullständig validering av modellens tillämplighet.</p></div>';renderScore2DM();renderOrganCockpit();renderVisit();
 }
 function renderRiskMath(){
  const a=Number(el('exampleBaseline').value),b=Number(el('exampleTreated').value);
