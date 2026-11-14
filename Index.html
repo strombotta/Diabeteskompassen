@@ -1,1 +1,161 @@
 
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diabeteskompassen</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f9;color:#183047;
+font:16px system-ui,Arial}
+header{background:#123d53;color:white;padding:22px}
+main{max-width:900px;margin:auto;padding:16px}
+h1{margin:0;font-size:26px}
+h2{font-size:19px}
+.card{background:white;padding:18px;margin:14px 0;
+border-radius:14px;box-shadow:0 2px 9px #0001}
+.grid{display:grid;grid-template-columns:repeat(
+auto-fit,minmax(145px,1fr));gap:12px}
+label{display:block;font-size:14px;margin-bottom:5px}
+input{width:100%;padding:10px;border:1px solid #bbcbd5;
+border-radius:8px;font-size:16px}
+button{padding:12px 17px;background:#126b79;color:white;
+border:0;border-radius:9px;font-size:15px;margin:5px 4px 5px 0}
+.status{padding:12px;margin:8px 0;border-radius:9px}
+.ok{background:#e1f5e9}
+.warn{background:#fff0d7}
+.note{color:#526578;font-size:13px}
+.bar{height:12px;background:#e2e8f0;border-radius:9px;
+overflow:hidden;margin:7px 0}
+.fill{height:100%;background:#d99035}
+.hidden{display:none}
+@media print{button{display:none}body{background:white}}
+</style>
+</head>
+<body>
+<header>
+<h1>Diabeteskompassen</h1>
+<div>Beslutsstöd för diabetes typ 2 · Demo 0.1</div>
+</header>
+<main>
+<div class="card">
+<strong>Demoversion – endast fiktiva uppgifter</strong>
+<p class="note">Målen är redigerbara exempel, inte
+automatiskt fastställda behandlingsmål.
+Ingen validerad riskberäkning utförs.</p>
+<button onclick="demo()">Ladda exempelpatient</button>
+<button onclick="patient()">Patientläge</button>
+<button onclick="window.print()">Skriv ut</button>
+</div>
+
+<section id="clinical">
+<div class="card">
+<h2>Patientens mätvärden</h2>
+<div class="grid" id="inputs"></div>
+</div>
+<div class="card">
+<h2>Individuella behandlingsmål</h2>
+<p class="note">Ange mål efter klinisk bedömning.</p>
+<div class="grid" id="targets"></div>
+</div>
+</section>
+
+<div class="card">
+<h2 id="resultTitle">Översikt och prioriteringar</h2>
+<div id="results"></div>
+</div>
+
+<div class="card">
+<h2>Förändring mot föregående kontroll</h2>
+<div id="trends"></div>
+<p class="note">Diagrammen visar endast förändring
+av mätvärden, inte förändring i mortalitet.</p>
+</div>
+
+<div class="card">
+<h2>Medicinsk information</h2>
+<p>Riskbedömning måste även beakta ålder,
+diabetesduration, hjärt-kärlsjukdom,
+njursjukdom, läkemedel, skörhet och
+patientens preferenser.</p>
+<p class="note">Detta är en teknisk prototyp.
+Inte avsedd för kliniska behandlingsbeslut.</p>
+</div>
+</main>
+<script>
+const fields=[
+["HbA1c","mmol/mol",62,58,52],
+["LDL","mmol/L",2.6,3.1,1.8],
+["Systoliskt BT","mmHg",142,151,130],
+["Diastoliskt BT","mmHg",86,91,80],
+["eGFR","ml/min/1,73 m²",68,74,60],
+["U-alb/krea","mg/mmol",5.2,3.4,3],
+["Vikt","kg",94,97,90]
+];
+let patientMode=false;
+function build(){
+let a="",b="";
+fields.forEach((f,i)=>{
+a+=`<div><label>${f[0]} (${f[1]})</label>
+<input type="number" step="any" id="v${i}"
+value="${f[2]}" oninput="update()">
+<label>Föregående värde</label>
+<input type="number" step="any" id="p${i}"
+value="${f[3]}" oninput="update()"></div>`;
+b+=`<div><label>${f[0]} (${f[1]})</label>
+<input type="number" step="any" id="t${i}"
+value="${f[4]}" oninput="update()"></div>`;
+});
+document.getElementById("inputs").innerHTML=a;
+document.getElementById("targets").innerHTML=b;
+update();
+}
+function val(id){return Number(document.getElementById(id).value)}
+function update(){
+let out="",trend="",issues=[];
+fields.forEach((f,i)=>{
+let v=val("v"+i),p=val("p"+i),t=val("t"+i);
+let high=i!==4;
+let meets=high?v<t:v>=t;
+let diff=v-p;
+if(!meets)issues.push(f[0]);
+out+=`<div class="status ${meets?'ok':'warn'}">
+<strong>${f[0]}: ${v} ${f[1]}</strong>
+<div>${meets?'Inom angivet mål':'Utanför angivet mål'}
+(mål ${high?'under':'minst'} ${t})</div></div>`;
+let pct=Math.min(100,Math.abs(diff)/
+(Math.abs(p)||1)*100*3);
+trend+=`<p><strong>${f[0]}</strong>:
+${p} → ${v} (${diff>0?'+':''}${Number(diff.toFixed(2))})
+</p><div class="bar"><div class="fill"
+style="width:${Math.max(2,pct)}%"></div></div>`;
+});
+document.getElementById("results").innerHTML=
+`<p><strong>${issues.length} av ${fields.length}
+parametrar utanför angivna mål.</strong></p>`+
+out+`<p class="note">Avvikelserna är inte
+rangordnade efter klinisk risk.</p>`;
+document.getElementById("trends").innerHTML=trend;
+}
+function patient(){
+patientMode=!patientMode;
+document.getElementById("clinical").classList.toggle(
+"hidden",patientMode);
+document.getElementById("resultTitle").textContent=
+patientMode?"Din diabetesöversikt":
+"Översikt och prioriteringar";
+}
+function demo(){
+fields.forEach((f,i)=>{
+document.getElementById("v"+i).value=f[2];
+document.getElementById("p"+i).value=f[3];
+document.getElementById("t"+i).value=f[4];
+});
+update();
+}
+build();
+</script>
+</body>
+</html>
+
