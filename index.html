@@ -57,6 +57,42 @@
 <div class="card"><h2>Medicinsk validering – återstår</h2><div class="line"><strong>SCORE2-Diabetes</strong><div class="muted">Ingen ekvation, kalibrering eller referensfallsvalidering finns i programmet. Individuell kardiovaskulär risk ska inte anges.</div></div><div class="line"><strong>Behandlingseffekt</strong><div class="muted">Inga evidensbaserade effektestimat eller tidsbundna NNT har implementerats. Riskreglagen är enbart hypotetiska.</div></div><div class="line"><strong>Njurrisk</strong><div class="muted">KDIGO-kategorierna är schematiska och förutsätter klinisk kontext och kroniskhet. Kategorierna ersätter inte individuell bedömning.</div></div><div class="line"><strong>Dataskydd</strong><div class="muted">Webbplatsen är publik. Använd inte identifierbara eller verkliga patientuppgifter. Ingen autentisering, säker journalintegration eller DPIA är genomförd.</div></div><div class="line"><strong>Inför klinisk drift</strong><div class="muted">Behövs bland annat medicinsk sakkunniggranskning, testprotokoll, riskhantering, informationssäkerhetsbedömning och prövning av tillämpliga medicintekniska regelverk.</div></div></div></section><section class="panel" id="patient"><div class="card"><div class="patient-hero"><h2>Din diabetesöversikt</h2><p>Vi följer flera värden för att skydda hjärta, blodkärl och njurar. Målen anpassas till dig.</p></div><div id="patientCards" class="grid" style="margin-top:14px"></div><h3>Att prata om vid besöket</h3><div id="patientNotes"></div><p class="foot">Detta är en pedagogisk sammanställning av inmatade värden – inte en prognos över din framtida sjukdomsrisk.</p><div class="actions"><button onclick="window.print()">Skriv ut patientöversikt</button></div></div></section>
 <p class="foot">Version 0.9 · Lokalt körbar HTML · Fiktiva exempelvärden · Ingen lagring eller journalintegration.</p></main>
 <script>
+(function consolidateNavigation(){
+ const main=document.querySelector('main'),panels={};
+ ['overview','values','kidney','assessment','simulator','followup','cardiorisk','visit','qualityassurance','patient'].forEach(id=>panels[id]=document.getElementById(id));
+ const layout=[
+ {id:'home',items:[['overview',null],['values','Redigera mätvärden och mål'],['assessment','Kompletterande riskprofil']]},
+ {id:'analysis',items:[['simulator',null],['followup','Långtidstrender och årskontroll'],['kidney','Njurfunktion och albuminuri'],['cardiorisk','Kardiovaskulär risk och riskkommunikation']]},
+ {id:'consult',items:[['visit',null],['patient','Patientvänlig sammanfattning'],['qualityassurance','Avancerat: kvalitetskontroll']]}
+ ];
+ 
+ function setView(id){
+  document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  document.querySelectorAll('.workspace').forEach(w=>w.classList.toggle('active',w.id===id+'Workspace'));
+  window.scrollTo({top:0,behavior:'smooth'});
+ }
+ layout.forEach(group=>{
+  const wrap=document.createElement('div');wrap.className='workspace'+(group.id==='home'?' active':'');wrap.id=group.id+'Workspace';
+  if(group.id==='home'){
+   const quick=document.createElement('div');quick.className='quicklinks';
+   [['Registrera värden','values'],['Riskprofil','assessment'],['Analysera','analysis'],['Skapa besöksunderlag','consult']].forEach(([name,target])=>{
+    const b=document.createElement('button');b.type='button';b.textContent=name;
+    b.addEventListener('click',()=>{if(target==='analysis'||target==='consult'){setView(target);return}const d=document.getElementById('expand_'+target);if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}});
+    quick.appendChild(b);
+   });wrap.appendChild(quick);
+  }
+  group.items.forEach(([id,title])=>{
+   const p=panels[id];p.classList.remove('active');
+   if(!title){wrap.appendChild(p);return}
+   const d=document.createElement('details');d.className='collapsible';d.id='expand_'+id;
+   const summary=document.createElement('summary');summary.textContent=title;d.appendChild(summary);d.appendChild(p);wrap.appendChild(d);
+  });
+  main.appendChild(wrap);
+ });
+ document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+})();
+</script>
+<script>
 'use strict';
 const definitions=[
 {id:'hba',name:'HbA1c',unit:'mmol/mol',now:62,prev:68,target:52,kind:'max'},
@@ -341,40 +377,7 @@ el('qaRun').addEventListener('click',runQualityTests);
 runQualityTests();
 
 
-(function consolidateNavigation(){
- const main=document.querySelector('main'),panels={};
- ['overview','values','kidney','assessment','simulator','followup','cardiorisk','visit','qualityassurance','patient'].forEach(id=>panels[id]=document.getElementById(id));
- const layout=[
- {id:'home',items:[['overview',null],['values','Redigera mätvärden och mål'],['assessment','Kompletterande riskprofil']]},
- {id:'analysis',items:[['simulator',null],['followup','Långtidstrender och årskontroll'],['kidney','Njurfunktion och albuminuri'],['cardiorisk','Kardiovaskulär risk och riskkommunikation']]},
- {id:'consult',items:[['visit',null],['patient','Patientvänlig sammanfattning'],['qualityassurance','Avancerat: kvalitetskontroll']]}
- ];
- 
- function setView(id){
-  document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
-  document.querySelectorAll('.workspace').forEach(w=>w.classList.toggle('active',w.id===id+'Workspace'));
-  window.scrollTo({top:0,behavior:'smooth'});
- }
- layout.forEach(group=>{
-  const wrap=document.createElement('div');wrap.className='workspace'+(group.id==='home'?' active':'');wrap.id=group.id+'Workspace';
-  if(group.id==='home'){
-   const quick=document.createElement('div');quick.className='quicklinks';
-   [['Registrera värden','values'],['Riskprofil','assessment'],['Analysera','analysis'],['Skapa besöksunderlag','consult']].forEach(([name,target])=>{
-    const b=document.createElement('button');b.type='button';b.textContent=name;
-    b.addEventListener('click',()=>{if(target==='analysis'||target==='consult'){setView(target);return}const d=document.getElementById('expand_'+target);if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}});
-    quick.appendChild(b);
-   });wrap.appendChild(quick);
-  }
-  group.items.forEach(([id,title])=>{
-   const p=panels[id];p.classList.remove('active');
-   if(!title){wrap.appendChild(p);return}
-   const d=document.createElement('details');d.className='collapsible';d.id='expand_'+id;
-   const summary=document.createElement('summary');summary.textContent=title;d.appendChild(summary);d.appendChild(p);wrap.appendChild(d);
-  });
-  main.appendChild(wrap);
- });
- document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
-})();
+
 
 el('trendSelect').innerHTML=state.map(x=>'<option value="'+x.id+'">'+x.name+'</option>').join('');el('trendSelect').onchange=update;editor();update();renderVisit();
 </script></body></html>
