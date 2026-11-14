@@ -78,13 +78,16 @@ function riskProfile(){
  ];
  el('clinicalReview').innerHTML=checks.map(x=>'<div class="line"><strong>'+x[0]+'</strong><div class="muted">'+x[1]+'</div></div>').join('');
  const abnormal=state.filter(x=>valid(x)&&!ok(x)).map(x=>x.name+' '+fmt(x.now)+' '+x.unit+' (demomål '+(x.kind==='min'?'≥':'<')+' '+fmt(x.target)+')');
- el('visitSummary').value='DIABETESKOMPASSEN 0.3 – FIKTIVT UNDERLAG\\n'.replace('\\n','\n')+
- 'Ålder: '+num('age')+' år. Diabetesduration: '+num('duration')+' år. BMI: '+(Number.isFinite(bmi)?fmt(bmi):'saknas')+'.\n'+
- 'Rökning: '+el('smoking').selectedOptions[0].text+'. Etablerad hjärt-kärlsjukdom: '+el('cvd').selectedOptions[0].text+'.\n'+
- 'Värden utanför angivna demomål:\n'+(abnormal.length?abnormal.join('\n'):'Inga')+'\n'+
- 'Behandling registrerad: '+(tx.join(', ')||'ingen')+'.\n'+
- 'Att bedöma: individuell risk, behandlingsmål, njurstatus, levnadsvanor och komplikationsscreening.\n'+
- 'OBS: Automatiskt genererad demonstrationsöversikt, ej journaltext eller kliniskt beslutsunderlag.';
+ el('visitSummary').value=[
+ 'DIABETESKOMPASSEN 0.3 – FIKTIVT UNDERLAG',
+ 'Ålder: '+num('age')+' år. Diabetesduration: '+num('duration')+' år. BMI: '+(Number.isFinite(bmi)?fmt(bmi):'saknas')+'.',
+ 'Rökning: '+el('smoking').selectedOptions[0].text+'. Etablerad hjärt-kärlsjukdom: '+el('cvd').selectedOptions[0].text+'.',
+ 'Värden utanför angivna demomål:',
+ ...(abnormal.length?abnormal:['Inga']),
+ 'Behandling registrerad: '+(tx.join(', ')||'ingen')+'.',
+ 'Att bedöma: individuell risk, behandlingsmål, njurstatus, levnadsvanor och komplikationsscreening.',
+ 'OBS: Automatiskt genererad demonstrationsöversikt, ej journaltext eller kliniskt beslutsunderlag.'
+ ].join(String.fromCharCode(10));
 }
 ['age','height','duration','smoking','cvd','frailty'].forEach(id=>el(id).addEventListener('input',riskProfile));
 el('treatment').addEventListener('change',riskProfile);
