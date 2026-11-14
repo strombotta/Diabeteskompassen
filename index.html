@@ -466,7 +466,7 @@ function renderRiskMath(){
  const base=Math.round(a),treated=Math.round(b);
  el('riskIcons').innerHTML=Array.from({length:100},(_,i)=>'<span title="Person '+(i+1)+'" style="width:12px;height:16px;border-radius:3px;background:'+(i<Math.min(base,treated)?'#c46b5c':i<Math.max(base,treated)?'#dfb65b':'#c9d7d8')+'"></span>').join('');
 }
-['riskSex','riskTotalChol','riskHdl','riskDiabetesOnset','riskRegion'].forEach(id=>el(id).addEventListener('input',renderRiskEligibility));
+['riskSex','riskTotalChol','riskHdl','riskDiabetesOnset','riskRegion'].forEach(id=>el(id).addEventListener('input',()=>{renderRiskEligibility();renderDataProgress()}));
 ['age','duration','cvd'].forEach(id=>el(id).addEventListener('input',renderRiskEligibility));
 ['exampleBaseline','exampleTreated'].forEach(id=>el(id).addEventListener('input',renderRiskMath));
 renderRiskEligibility();renderRiskMath();
